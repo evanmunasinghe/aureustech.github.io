@@ -5,16 +5,13 @@ import "./globals.css";
 import SiteScripts from "@/components/SiteScripts";
 
 export const metadata: Metadata = {
-  title: "Aureus Technologies | Software & Web Development",
-  description:
-    "Aureus Technologies provides modern website development, custom software solutions, mobile applications and digital services.",
+  title: {
+    default: "Aureus Technologies",
+    template: "%s | Aureus Technologies",
+  },
   icons: {
     icon: "/images/aureus-technologies-logo.png",
   },
-};
-
-export const viewport: Viewport = {
-  themeColor: "#080a0d",
 };
 
 export default function RootLayout({
@@ -32,10 +29,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>
-        {children}
-        <SiteScripts />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

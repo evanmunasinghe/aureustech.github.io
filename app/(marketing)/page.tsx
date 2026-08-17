@@ -58,6 +58,11 @@ export default function Home() {
                     Contact
                   </a>
                 </li>
+                <li className="nav-item ms-lg-2">
+                  <a className="nav-link nav-login-link" href="/login">
+                    <i className="bi bi-box-arrow-in-right me-1"></i>Sign in
+                  </a>
+                </li>
                 <li className="nav-item ms-lg-3">
                   <a className="btn-gold btn-small" href="#contact">
                     Get a Quote <i className="bi bi-arrow-right"></i>

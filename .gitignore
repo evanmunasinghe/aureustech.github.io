@@ -5,3 +5,10 @@ node_modules
 dist
 .next
 out
+
+.env
+.env.local
+.env.production
+
+/lib/generated/prisma
+*.tsbuildinfo
