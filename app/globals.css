@@ -106,7 +106,8 @@ html[data-theme="light"] {
 html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 body { margin: 0; overflow-x: hidden; background: var(--ink); color: var(--text); font-family: "DM Sans", sans-serif; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
-.container { max-width: 1280px; }
+/* Keep Bootstrap's stepped container widths; only widen the top step. */
+@media (min-width: 1400px) { .container { max-width: 1280px; } }
 
 .site-header { border-bottom: 1px solid transparent; transition: .3s ease; }
 .site-header.scrolled { background: var(--scrolled-header-bg); border-color: var(--line-soft); backdrop-filter: blur(18px); }
@@ -132,7 +133,7 @@ a { color: inherit; text-decoration: none; }
 .nav-login-link { display: inline-flex; align-items: center; padding: 9px 14px !important; font-size: 13px; font-weight: 600; color: var(--text-strong) !important; border: 1px solid var(--border-input); border-radius: 8px; transition: .25s ease; }
 .nav-login-link:hover { border-color: var(--muted); background: var(--hover); transform: translateY(-1px); }
 
-.hero { position: relative; min-height: 100svh; padding: 130px 0 0; overflow: hidden; background: radial-gradient(circle at 78% 35%, rgba(212, 166, 42, .10), transparent 26%), var(--hero-bg); }
+.hero { position: relative; min-height: 100svh; padding: 118px 0 92px; overflow: hidden; background: radial-gradient(circle at 78% 35%, rgba(212, 166, 42, .10), transparent 26%), var(--hero-bg); }
 .hero-grid-lines { position: absolute; inset: 0; opacity: .18; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 70px 70px; mask-image: linear-gradient(to right, #000, transparent 72%); }
 .hero-orb { position: absolute; width: 520px; height: 520px; left: -340px; top: 20%; border-radius: 50%; background: rgba(212, 166, 42, .08); filter: blur(50px); }
 .eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 24px; color: var(--gold-bright); font: 700 12px/1 "Manrope", sans-serif; letter-spacing: .22em; }
@@ -146,7 +147,7 @@ em { color: transparent; font-style: normal; background: linear-gradient(105deg,
 .hero-tags { margin-top: 34px; color: var(--muted); font-size: 11px; letter-spacing: .09em; text-transform: uppercase; }
 .hero-tags span { display: flex; align-items: center; }
 .hero-tags span:not(:last-child)::after { content: ""; width: 3px; height: 3px; margin: 0 12px; border-radius: 50%; background: var(--gold); }
-.hero-visual { position: relative; height: 590px; margin-right: calc((100vw - min(100vw - 24px, 1280px)) / -2); }
+.hero-visual { position: relative; height: clamp(430px, 64svh, 590px); margin-right: calc((100vw - min(100vw - 24px, 1280px)) / -2); }
 .hero-image { position: absolute; inset: 0; overflow: hidden; border-left: 1px solid rgba(242, 193, 78, .55); clip-path: polygon(21% 0, 100% 0, 100% 100%, 12% 100%, 0 73%, 13% 50%, 4% 27%); }
 .hero-image img { width: 100%; height: 100%; object-fit: cover; object-position: 77% center; filter: saturate(.88) contrast(1.06); }
 .hero-image::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--ink), rgba(8, 10, 13, .5) 20%, transparent 54%), linear-gradient(0deg, rgba(8, 10, 13, .62), transparent 48%); }
@@ -155,7 +156,7 @@ em { color: transparent; font-style: normal; background: linear-gradient(105deg,
 .hero-promise div { display: flex; flex-direction: column; gap: 4px; }
 .hero-promise small { color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: .17em; }
 .hero-promise strong { color: #fff; font: 600 14px "Manrope", sans-serif; }
-.trust-strip { position: relative; z-index: 2; margin-top: 40px; border-top: 1px solid var(--border); }
+.trust-strip { position: relative; z-index: 2; margin-top: clamp(28px, 5vh, 48px); border-top: 1px solid var(--border); }
 .trust-item { min-height: 80px; padding: 0 20px; display: flex; align-items: center; gap: 11px; border-right: 1px solid var(--border); }
 .trust-item > i, .about-values i { width: 28px; height: 28px; display: grid; place-items: center; flex: none; color: var(--gold-bright); border: 1px solid rgba(212, 166, 42, .5); border-radius: 50%; }
 .trust-item p { display: flex; flex-direction: column; gap: 3px; margin: 0; }
@@ -293,7 +294,7 @@ blockquote strong { color: var(--heading); font: 600 15px/1.5 "Manrope", sans-se
   .navbar .nav-link { padding: 10px 0 !important; font-size: 17px; }
   .navbar .btn-gold { width: 100%; margin-top: 8px; }
   .hero { padding-top: 150px; }
-  .hero-visual { height: 480px; margin: 0 -12px; }
+  .hero-visual { height: clamp(320px, 52svh, 480px); margin: 0; }
   .hero-image { clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%, 0 14%); }
   .trust-strip { margin-top: 20px; }
   .trust-item { border-bottom: 1px solid var(--border); }
