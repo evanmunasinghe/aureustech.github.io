@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "NEXT_PUBLIC_ENV=production next build && node scripts/prepare-sites.mjs",
-    "build:demo": "NEXT_PUBLIC_ENV=demo next build && node scripts/prepare-sites.mjs"
+    "build": "prisma generate && NEXT_PUBLIC_ENV=production next build && node scripts/prepare-sites.mjs",
+    "build:demo": "prisma generate && NEXT_PUBLIC_ENV=demo next build && node scripts/prepare-sites.mjs"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
