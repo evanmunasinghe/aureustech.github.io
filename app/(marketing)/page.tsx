@@ -1,3 +1,5 @@
+import { projects } from "@/lib/portfolio";
+
 export default function Home() {
   return (
     <>
@@ -368,117 +370,63 @@ export default function Home() {
             </div>
 
             <div className="projects">
-              <article className="project-card reveal">
-                <div className="row g-0">
-                  <div className="col-lg-7">
-                    <div className="project-visual">
-                      <span className="project-number">01</span>
-                      <div className="mock-app">
-                        <div className="mock-bar">
-                          <i></i>
-                          <i></i>
-                          <i></i>
-                        </div>
-                        <div className="mock-body">
-                          <aside>
-                            <b>AT</b>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                          </aside>
-                          <main>
-                            <div className="mock-title"></div>
-                            <div className="mock-stats">
-                              <i></i>
-                              <i></i>
-                              <i></i>
-                            </div>
-                            <div className="mock-chart">
-                              <b></b>
-                              <b></b>
-                              <b></b>
-                              <b></b>
-                              <b></b>
-                              <b></b>
-                            </div>
-                          </main>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-5 d-flex">
-                    <div className="project-copy">
-                      <small>BUSINESS MANAGEMENT SYSTEM</small>
-                      <h3>FLEEVE Garage Platform</h3>
-                      <p>A unified workshop workspace for customers, vehicles, job cards, technicians, inspections and bookings.</p>
-                      <div className="tag-list">
-                        <span>Laravel</span>
-                        <span>MySQL</span>
-                        <span>JavaScript</span>
-                      </div>
-                      <a href="#contact">
-                        Discuss a similar project <i className="bi bi-arrow-right"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </article>
-
-              <article className="project-card reveal">
-                <div className="row g-0">
-                  <div className="col-lg-7">
-                    <div className="project-visual blue">
-                      <span className="project-number">02</span>
-                      <div className="mock-app">
-                        <div className="mock-bar">
-                          <i></i>
-                          <i></i>
-                          <i></i>
-                        </div>
-                        <div className="mock-body">
-                          <aside>
-                            <b>AT</b>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                          </aside>
-                          <main>
-                            <div className="mock-title"></div>
-                            <div className="mock-stats">
-                              <i></i>
-                              <i></i>
-                              <i></i>
-                            </div>
-                            <div className="mock-chart">
-                              <b></b>
-                              <b></b>
-                              <b></b>
-                              <b></b>
-                              <b></b>
-                              <b></b>
-                            </div>
-                          </main>
+              {projects.map((project) => (
+                <article className="project-card reveal" key={project.number}>
+                  <div className="row g-0">
+                    <div className="col-lg-7">
+                      <div className={`project-visual${project.variant ? ` ${project.variant}` : ""}`}>
+                        <span className="project-number">{project.number}</span>
+                        <div className="mock-app">
+                          <div className="mock-bar">
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                          </div>
+                          <div className="mock-body">
+                            <aside>
+                              <b>AT</b>
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                            </aside>
+                            <main>
+                              <div className="mock-title"></div>
+                              <div className="mock-stats">
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                              </div>
+                              <div className="mock-chart">
+                                <b></b>
+                                <b></b>
+                                <b></b>
+                                <b></b>
+                                <b></b>
+                                <b></b>
+                              </div>
+                            </main>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-lg-5 d-flex">
-                    <div className="project-copy">
-                      <small>WEB DESIGN & DEVELOPMENT</small>
-                      <h3>Corporate Digital Presence</h3>
-                      <p>A polished, conversion-focused company website built to communicate value and invite customer action.</p>
-                      <div className="tag-list">
-                        <span>Responsive UI</span>
-                        <span>Performance</span>
-                        <span>SEO</span>
+                    <div className="col-lg-5 d-flex">
+                      <div className="project-copy">
+                        <small>{project.category}</small>
+                        <h3>{project.title}</h3>
+                        <p>{project.description}</p>
+                        <div className="tag-list">
+                          {project.tags.map((tag) => (
+                            <span key={tag}>{tag}</span>
+                          ))}
+                        </div>
+                        <a href="#contact">
+                          Discuss a similar project <i className="bi bi-arrow-right"></i>
+                        </a>
                       </div>
-                      <a href="#contact">
-                        Discuss a similar project <i className="bi bi-arrow-right"></i>
-                      </a>
                     </div>
                   </div>
-                </div>
-              </article>
+                </article>
+              ))}
             </div>
           </div>
         </section>

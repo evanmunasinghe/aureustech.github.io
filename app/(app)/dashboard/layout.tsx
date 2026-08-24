@@ -13,6 +13,7 @@ const NAV = [
     group: "Manage",
     items: [
       { href: "/dashboard", label: "Overview", icon: "bi-grid-1x2" },
+      { href: "/dashboard/projects", label: "Projects", icon: "bi-briefcase" },
       { href: "/dashboard/kanban", label: "Kanban Board", icon: "bi-kanban" },
       { href: "/dashboard/sprints", label: "Sprints", icon: "bi-list-check" },
     ],

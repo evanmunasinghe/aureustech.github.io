@@ -20,6 +20,13 @@ enum ProjectStatus {
   COMPLETED
 }
 
+enum ProjectCategory {
+  WEB
+  MOBILE
+  DESKTOP
+  UI_UX
+}
+
 enum MilestoneStatus {
   UPCOMING
   IN_PROGRESS
@@ -59,6 +66,7 @@ model Project {
   name        String
   clientId    String
   client      User               @relation("ClientProjects", fields: [clientId], references: [id])
+  category    ProjectCategory    @default(WEB)
   status      ProjectStatus      @default(PLANNING)
   budget      Float?
   stagingUrl  String?

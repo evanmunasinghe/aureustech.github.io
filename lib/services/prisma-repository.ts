@@ -45,6 +45,7 @@ export const prismaRepository: Repository = {
       users: users.map((u) => ({ ...u, createdAt: u.createdAt.toISOString() })),
       projects: projects.map((p) => ({
         ...p,
+        category: p.category as AppData["projects"][number]["category"],
         budget: p.budget ?? null,
         stagingUrl: p.stagingUrl,
         startDate: iso(p.startDate),

@@ -17,6 +17,7 @@ import type {
   NotificationType,
   Priority,
   Project,
+  ProjectCategory,
   Task,
   TaskStatus,
   TimeEntry,
@@ -50,6 +51,17 @@ export interface CreateTaskInput {
   status?: TaskStatus;
 }
 
+export interface CreateProjectInput {
+  name: string;
+  clientId: string;
+  category: ProjectCategory;
+  status?: Project["status"];
+  budget?: number | null;
+  stagingUrl?: string | null;
+  startDate?: string | null;
+  deadline?: string | null;
+}
+
 interface DataContextValue {
   data: AppData | null;
   currentUser: User | null;
@@ -60,6 +72,7 @@ interface DataContextValue {
   login: (email: string, password: string) => LoginResult;
   logout: () => void;
   createTask: (input: CreateTaskInput) => Task | null;
+  createProject: (input: CreateProjectInput) => Project | null;
   updateTask: (id: string, patch: Partial<Task>) => void;
   moveTask: (id: string, status: TaskStatus) => void;
   deleteTask: (id: string) => void;
@@ -247,6 +260,31 @@ export function DataProvider({ children }: { children: ReactNode }) {
         };
         created = task;
         return { ...prev, tasks: [...prev.tasks, task] };
+      });
+      return created;
+    },
+    []
+  );
+
+  const createProject = useCallback(
+    (input: CreateProjectInput): Project | null => {
+      let created: Project | null = null;
+      setData((prev) => {
+        if (!prev) return prev;
+        const project: Project = {
+          id: uid("p"),
+          name: input.name,
+          clientId: input.clientId,
+          category: input.category,
+          status: input.status ?? "PLANNING",
+          budget: input.budget ?? null,
+          stagingUrl: input.stagingUrl ?? null,
+          startDate: input.startDate ?? null,
+          deadline: input.deadline ?? null,
+          createdAt: new Date().toISOString(),
+        };
+        created = project;
+        return { ...prev, projects: [...prev.projects, project] };
       });
       return created;
     },
@@ -565,6 +603,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       login,
       logout,
       createTask,
+      createProject,
       updateTask,
       moveTask,
       deleteTask,
@@ -589,6 +628,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       login,
       logout,
       createTask,
+      createProject,
       updateTask,
       moveTask,
       deleteTask,

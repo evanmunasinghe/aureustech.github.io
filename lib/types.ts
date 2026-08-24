@@ -2,6 +2,8 @@ export type Role = "ADMIN" | "DEVELOPER" | "CLIENT";
 
 export type ProjectStatus = "PLANNING" | "ACTIVE" | "ON_HOLD" | "COMPLETED";
 
+export type ProjectCategory = "WEB" | "MOBILE" | "DESKTOP" | "UI_UX";
+
 export type MilestoneStatus = "UPCOMING" | "IN_PROGRESS" | "COMPLETED";
 
 export type TaskStatus = "BACKLOG" | "IN_PROGRESS" | "REVIEW" | "DONE";
@@ -20,6 +22,7 @@ export interface Project {
   id: string;
   name: string;
   clientId: string;
+  category: ProjectCategory;
   status: ProjectStatus;
   budget: number | null;
   stagingUrl: string | null;
@@ -162,4 +165,11 @@ export const MILESTONE_STATUS_LABELS: Record<MilestoneStatus, string> = {
   UPCOMING: "Upcoming",
   IN_PROGRESS: "In Progress",
   COMPLETED: "Completed",
+};
+
+export const PROJECT_CATEGORY_LABELS: Record<ProjectCategory, string> = {
+  WEB: "Web Development",
+  MOBILE: "Mobile App Development",
+  DESKTOP: "Desktop Application",
+  UI_UX: "UI/UX Design",
 };
