@@ -5,7 +5,7 @@ import { useData } from "@/lib/store/store-context";
 import { milestonesByProject, projectHealth, projectProgress, userById } from "@/lib/store/selectors";
 import { ProgressBar } from "@/components/app/ProgressBar";
 import { StatusBadge } from "@/components/app/StatusBadge";
-import { RoleSwitcher } from "@/components/app/RoleSwitcher";
+import { AccountMenu } from "@/components/app/AccountMenu";
 import type { BadgeTone } from "@/components/app/StatusBadge";
 import { MILESTONE_STATUS_LABELS } from "@/lib/types";
 
@@ -45,7 +45,7 @@ export default function ClientsPage() {
           <p>Update milestone progress and publish updates your clients can see.</p>
         </div>
         <div className="app-topbar-actions">
-          <RoleSwitcher />
+          <AccountMenu />
         </div>
       </div>
 

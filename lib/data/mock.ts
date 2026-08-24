@@ -32,6 +32,7 @@ const day = (offset: number) => {
 
 export const mockData: AppData = {
   users: [
+    { id: "u-superadmin", name: "Evan Munasinghe", email: "esmunasinghe@gmail.com", role: "SUPERADMIN" },
     { id: "u-admin", name: "Dev Perera", email: "dev@aureustechnologies.com", role: "ADMIN" },
     { id: "u-dev", name: "Dilan Fernando", email: "dilan@aureustechnologies.com", role: "DEVELOPER" },
     { id: "u-dev2", name: "Ishara Wickrama", email: "ishara@aureustechnologies.com", role: "DEVELOPER" },

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useData } from "@/lib/store/store-context";
 import { tasksByProject, timeForTask, totalHoursForTask, userById } from "@/lib/store/selectors";
-import { RoleSwitcher } from "@/components/app/RoleSwitcher";
+import { AccountMenu } from "@/components/app/AccountMenu";
 import { ProjectFilter } from "@/components/app/ProjectFilter";
 import { downloadCsv } from "@/lib/utils/csv";
 
@@ -99,7 +99,7 @@ export default function TimePage() {
           <button className="btn-app ghost" onClick={exportCsv}>
             <i className="bi bi-download me-1"></i> Export CSV
           </button>
-          <RoleSwitcher />
+          <AccountMenu />
         </div>
       </div>
 

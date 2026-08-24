@@ -6,7 +6,7 @@ import { tasksInSprint, tasksByProject, projectById } from "@/lib/store/selector
 import { ProgressBar } from "@/components/app/ProgressBar";
 import { TaskModal } from "@/components/app/TaskModal";
 import { ProjectFilter } from "@/components/app/ProjectFilter";
-import { RoleSwitcher } from "@/components/app/RoleSwitcher";
+import { AccountMenu } from "@/components/app/AccountMenu";
 import type { Task } from "@/lib/types";
 
 export default function SprintsPage() {
@@ -45,7 +45,7 @@ export default function SprintsPage() {
           <p>Plan delivery around focused sprint windows.</p>
         </div>
         <div className="app-topbar-actions">
-          <RoleSwitcher />
+          <AccountMenu />
         </div>
       </div>
 

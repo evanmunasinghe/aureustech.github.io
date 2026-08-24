@@ -25,13 +25,25 @@ import type {
 } from "@/lib/types";
 import { getRepository } from "@/lib/services/repository";
 import { mentionedUserIds, userById } from "@/lib/store/selectors";
-import { authenticate } from "@/lib/auth/mock-auth";
+import { authenticate, saveSelfCredential } from "@/lib/auth/mock-auth";
 
 const STORAGE_KEY = "aureus-pms-data-v1";
 const USER_KEY = "aureus-pms-user-v1";
 const AUTH_KEY = "aureus-pms-auth-v1";
 
 export interface LoginResult {
+  ok: boolean;
+  error: string | null;
+  user: User | null;
+}
+
+export interface RegisterClientInput {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface RegisterResult {
   ok: boolean;
   error: string | null;
   user: User | null;
@@ -70,6 +82,7 @@ interface DataContextValue {
   isAuthenticated: boolean;
   authUser: User | null;
   login: (email: string, password: string) => LoginResult;
+  registerClient: (input: RegisterClientInput) => RegisterResult;
   logout: () => void;
   createTask: (input: CreateTaskInput) => Task | null;
   createProject: (input: CreateProjectInput) => Project | null;
@@ -200,6 +213,41 @@ export function DataProvider({ children }: { children: ReactNode }) {
       setAuthId(result.user.id);
       setCurrentUserId(result.user.id);
       return { ok: true, error: null, user: result.user };
+    },
+    [data]
+  );
+
+  const registerClient = useCallback(
+    (input: RegisterClientInput): RegisterResult => {
+      const name = input.name.trim();
+      const email = input.email.trim().toLowerCase();
+      if (!data) {
+        return { ok: false, error: "Workspace is still loading — try again in a moment.", user: null };
+      }
+      if (name.length < 2) {
+        return { ok: false, error: "Please enter your full name.", user: null };
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        return { ok: false, error: "Please enter a valid email address.", user: null };
+      }
+      if (input.password.length < 8) {
+        return { ok: false, error: "Password must be at least 8 characters.", user: null };
+      }
+      if (data.users.some((u) => u.email.toLowerCase() === email)) {
+        return { ok: false, error: "An account with this email already exists. Try signing in.", user: null };
+      }
+      const user: User = {
+        id: uid("u"),
+        name,
+        email,
+        role: "CLIENT",
+        createdAt: new Date().toISOString(),
+      };
+      setData((prev) => (prev ? { ...prev, users: [...prev.users, user] } : prev));
+      saveSelfCredential({ userId: user.id, password: input.password });
+      setAuthId(user.id);
+      setCurrentUserId(user.id);
+      return { ok: true, error: null, user };
     },
     [data]
   );
@@ -601,6 +649,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       isAuthenticated,
       authUser,
       login,
+      registerClient,
       logout,
       createTask,
       createProject,
@@ -626,6 +675,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       isAuthenticated,
       authUser,
       login,
+      registerClient,
       logout,
       createTask,
       createProject,

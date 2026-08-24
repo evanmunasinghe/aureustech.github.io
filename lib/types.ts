@@ -1,4 +1,4 @@
-export type Role = "ADMIN" | "DEVELOPER" | "CLIENT";
+export type Role = "SUPERADMIN" | "ADMIN" | "DEVELOPER" | "CLIENT";
 
 export type ProjectStatus = "PLANNING" | "ACTIVE" | "ON_HOLD" | "COMPLETED";
 

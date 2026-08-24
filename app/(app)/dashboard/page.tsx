@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useData } from "@/lib/store/store-context";
-import { RoleSwitcher } from "@/components/app/RoleSwitcher";
+import { AccountMenu } from "@/components/app/AccountMenu";
 import { ProgressBar } from "@/components/app/ProgressBar";
 import { StatusBadge } from "@/components/app/StatusBadge";
 import {
@@ -11,6 +11,12 @@ import {
   userById,
 } from "@/lib/store/selectors";
 import type { BadgeTone } from "@/components/app/StatusBadge";
+
+const ROLE_NAME: Record<string, string> = {
+  SUPERADMIN: "Super Admin",
+  ADMIN: "Admin",
+  DEVELOPER: "Developer",
+};
 
 const HEALTH_TONE: Record<string, BadgeTone> = {
   ON_TRACK: "on-track",
@@ -56,7 +62,7 @@ export default function DashboardOverview() {
           </p>
         </div>
         <div className="app-topbar-actions">
-          <RoleSwitcher />
+          <AccountMenu />
         </div>
       </div>
 
@@ -163,7 +169,7 @@ export default function DashboardOverview() {
                       <div>
                         <div className="text-strong">{member.name}</div>
                         <div className="text-muted-2" style={{ fontSize: 11 }}>
-                          {member.role === "ADMIN" ? "Admin" : "Developer"}
+                          {ROLE_NAME[member.role] ?? member.role}
                         </div>
                       </div>
                     </div>

@@ -1,4 +1,5 @@
 import { projects } from "@/lib/portfolio";
+import ThemeToggle from "@/components/app/ThemeToggle";
 
 export default function Home() {
   return (
@@ -59,6 +60,9 @@ export default function Home() {
                   <a className="nav-link" href="#contact">
                     Contact
                   </a>
+                </li>
+                <li className="nav-item ms-lg-2 d-none d-sm-block">
+                  <ThemeToggle />
                 </li>
                 <li className="nav-item ms-lg-2">
                   <a className="nav-link nav-login-link" href="/login">

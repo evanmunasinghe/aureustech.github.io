@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useData } from "@/lib/store/store-context";
-import { RoleSwitcher } from "@/components/app/RoleSwitcher";
+import { AccountMenu } from "@/components/app/AccountMenu";
 import { ProgressBar } from "@/components/app/ProgressBar";
 import { StatusBadge } from "@/components/app/StatusBadge";
 import { ProjectModal } from "@/components/app/ProjectModal";
@@ -44,7 +44,7 @@ const PROJECTStatusLabel: Record<string, string> = {
 };
 
 export default function ProjectsPage() {
-  const { data, currentUser } = useData();
+  const { data } = useData();
   const [showModal, setShowModal] = useState(false);
 
   if (!data) return <div className="empty-hint">Loading projects…</div>;
@@ -60,15 +60,14 @@ export default function ProjectsPage() {
         <div>
           <h1>Projects</h1>
           <p>
-            All projects across {currentUser?.name ?? "the team"}. Track status, progress and
-            milestones.
+            Track status, progress and milestones across all client work.
           </p>
         </div>
         <div className="app-topbar-actions">
           <button className="btn-app gold" onClick={() => setShowModal(true)}>
             <i className="bi bi-plus-lg"></i> New project
           </button>
-          <RoleSwitcher />
+          <AccountMenu />
         </div>
       </div>
 

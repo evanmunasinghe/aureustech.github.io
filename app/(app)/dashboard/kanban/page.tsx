@@ -6,7 +6,7 @@ import { userById, totalHoursForTask } from "@/lib/store/selectors";
 import { KanbanBoard } from "@/components/app/KanbanBoard";
 import { TaskModal } from "@/components/app/TaskModal";
 import { ProjectFilter } from "@/components/app/ProjectFilter";
-import { RoleSwitcher } from "@/components/app/RoleSwitcher";
+import { AccountMenu } from "@/components/app/AccountMenu";
 import { downloadCsv } from "@/lib/utils/csv";
 import { TASK_STATUS_LABELS, PRIORITY_LABELS } from "@/lib/types";
 import type { Task } from "@/lib/types";
@@ -65,7 +65,7 @@ export default function KanbanPage() {
           >
             <i className="bi bi-plus-lg"></i> New task
           </button>
-          <RoleSwitcher />
+          <AccountMenu />
         </div>
       </div>
 

@@ -3,10 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { RoleSwitcher } from "@/components/app/RoleSwitcher";
+import { AccountMenu } from "@/components/app/AccountMenu";
 import { NotificationsBell } from "@/components/app/NotificationsBell";
+import ThemeToggle from "@/components/app/ThemeToggle";
 import { openQuickSearch } from "@/components/app/QuickSearch";
 import { useData } from "@/lib/store/store-context";
+
+const ROLE_LABEL: Record<string, string> = {
+  SUPERADMIN: "Super Admin",
+  ADMIN: "Admin",
+  DEVELOPER: "Developer",
+  CLIENT: "Client",
+};
 
 const NAV = [
   {
@@ -60,6 +68,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         ))}
 
         <div className="app-sidebar-tools">
+          <ThemeToggle className="as-tool" />
           <button className="sidebar-tool" onClick={openQuickSearch} aria-label="Search">
             <i className="bi bi-search"></i>
             <span>Search</span>
@@ -71,9 +80,19 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <div className="app-sidebar-foot">
           {currentUser && (
             <div className="app-account">
+              <span className="avatar">
+                {currentUser.name
+                  .split(" ")
+                  .map((part) => part[0])
+                  .slice(0, 2)
+                  .join("")
+                  .toUpperCase()}
+              </span>
               <div className="app-account-info">
-                <span className="app-account-name">{currentUser.name}</span>
-                <span className="app-account-role">{currentUser.email}</span>
+                <span className="app-account-name" title={currentUser.email}>
+                  {currentUser.name}
+                </span>
+                <span className="app-account-role">{ROLE_LABEL[currentUser.role]}</span>
               </div>
               <button
                 type="button"

@@ -3,11 +3,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useData } from "@/lib/store/store-context";
-import { RoleSwitcher } from "@/components/app/RoleSwitcher";import { NotificationsBell } from "@/components/app/NotificationsBell";
+import { AccountMenu } from "@/components/app/AccountMenu";
+import { NotificationsBell } from "@/components/app/NotificationsBell";
 import { openQuickSearch } from "@/components/app/QuickSearch";
+import ThemeToggle from "@/components/app/ThemeToggle";
 
 export default function PortalLayout({ children }: { children: ReactNode }) {
-  const { currentUser, logout } = useData();
+  const { currentUser } = useData();
   const isClient = currentUser?.role === "CLIENT";
 
   return (
@@ -21,35 +23,16 @@ export default function PortalLayout({ children }: { children: ReactNode }) {
           </span>
         </Link>
         <div className="portal-header-actions">
+          <ThemeToggle />
           <button className="sidebar-tool" onClick={openQuickSearch} aria-label="Search">
             <i className="bi bi-search"></i>
           </button>
           <NotificationsBell />
-          <RoleSwitcher compact />
+          <AccountMenu compact />
           {!isClient && (
             <Link href="/dashboard" className="btn-app sm ghost">
               <i className="bi bi-kanban me-1"></i> Dashboard
             </Link>
-          )}
-          {currentUser && (
-            <>
-              <span className="portal-signed-in text-muted-2">
-                <i className="bi bi-person-circle me-1"></i>
-                {currentUser.name}
-              </span>
-              <button
-                type="button"
-                className="sidebar-tool plain"
-                onClick={() => {
-                  logout();
-                  window.location.href = "/";
-                }}
-                aria-label="Sign out"
-                title="Sign out"
-              >
-                <i className="bi bi-box-arrow-right"></i>
-              </button>
-            </>
           )}
         </div>
       </header>
