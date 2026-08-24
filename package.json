@@ -3,11 +3,29 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && node scripts/prepare-sites.mjs",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "NEXT_PUBLIC_ENV=production next build && node scripts/prepare-sites.mjs",
+    "build:demo": "NEXT_PUBLIC_ENV=demo next build && node scripts/prepare-sites.mjs"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@prisma/adapter-mariadb": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "mariadb": "^3.5.3",
+    "next": "^16.3.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.183.2"
   },
   "devDependencies": {
-    "vite": "7.0.6"
+    "@types/bootstrap": "^5.2.11",
+    "@types/node": "^26.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "playwright": "^1.62.1",
+    "prisma": "^7.9.1",
+    "typescript": "^5.9.3"
   }
 }
