@@ -1,9 +1,8 @@
-import { copyFileSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 
-rmSync("dist/index.html", { force: true });
-rmSync("dist/assets", { force: true, recursive: true });
-rmSync("dist/server", { force: true, recursive: true });
-rmSync("dist/.openai", { force: true, recursive: true });
+rmSync("dist", { recursive: true, force: true });
+cpSync("out", "dist", { recursive: true });
+
 mkdirSync("dist/server", { recursive: true });
 mkdirSync("dist/.openai", { recursive: true });
 
