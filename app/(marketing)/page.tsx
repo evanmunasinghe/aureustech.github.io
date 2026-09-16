@@ -1,5 +1,6 @@
 import { projects } from "@/lib/portfolio";
-import ThemeToggle from "@/components/app/ThemeToggle";
+import TiltCard from "@/components/marketing/TiltCard";
+import Hero3D from "@/components/marketing/Hero3D";
 
 export default function Home() {
   return (
@@ -61,9 +62,6 @@ export default function Home() {
                     Contact
                   </a>
                 </li>
-                <li className="nav-item ms-lg-2 d-none d-sm-block">
-                  <ThemeToggle />
-                </li>
                 <li className="nav-item ms-lg-2">
                   <a className="nav-link nav-login-link" href="/login">
                     <i className="bi bi-box-arrow-in-right me-1"></i>Sign in
@@ -81,90 +79,70 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="hero d-flex align-items-center" id="home">
-          <div className="hero-grid-lines"></div>
-          <div className="hero-orb"></div>
+        <section className="hero" id="home">
           <div className="container position-relative">
             <div className="row align-items-center g-5">
               <div className="col-lg-6">
                 <div className="hero-copy reveal visible">
-                  <p className="eyebrow">
-                    <span></span>AUREUS TECHNOLOGIES
+                  <p className="eyebrow-line">
+                    IDEAS <i className="bi bi-dot"></i> TECHNOLOGY <i className="bi bi-dot"></i> REAL IMPACT
                   </p>
                   <h1>
-                    Building <em>smart solutions</em> for a digital future.
+                    Digital Solutions
+                    <br />
+                    <em>for a Digital Future</em>
                   </h1>
                   <p className="hero-lead">
-                    We design and develop modern websites, software applications and digital
-                    experiences that help businesses grow, automate and move with confidence.
+                    We design and develop modern websites, software applications and digital experiences that
+                    help businesses grow, automate and move with confidence.
                   </p>
                   <div className="hero-actions d-flex flex-column flex-sm-row gap-3">
                     <a className="btn-gold" href="#contact">
                       Start Your Project <i className="bi bi-arrow-right"></i>
                     </a>
                     <a className="btn-outline-gold" href="#portfolio">
-                      View Our Work
+                      Our Services
                     </a>
                   </div>
-                  <div className="hero-tags d-flex flex-wrap">
-                    <span>Web Development</span>
-                    <span>Software Solutions</span>
-                    <span>Mobile Apps</span>
-                    <span>UI / UX</span>
+                  <div className="hero-stats">
+                    <div>
+                      <strong>Client-Focused</strong>
+                      <small>Direct communication, always</small>
+                    </div>
+                    <div>
+                      <strong>Modern &amp; Scalable</strong>
+                      <small>Built with the right tools</small>
+                    </div>
+                    <div>
+                      <strong>Sri Lanka &amp; Worldwide</strong>
+                      <small>Wherever your business is</small>
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="col-lg-6">
                 <div className="hero-visual reveal visible">
-                  <div className="hero-image">
-                    <img src="/images/aureus-hero.png" alt="Modern technology workspace representing Aureus digital solutions" />
-                  </div>
-                  <div className="hero-promise">
-                    <i className="bi bi-stars"></i>
-                    <div>
-                      <small>OUR PROMISE</small>
-                      <strong>Ideas, engineered with purpose.</strong>
+                  <div className="hero-photo">
+                    <Hero3D />
+                    <div className="hero-side-caption">
+                      <span>Technology</span>
+                      <span>People</span>
+                      <span>Progress</span>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="trust-strip row g-0">
-              <div className="col-12 col-sm-6 col-lg-3">
-                <div className="trust-item">
-                  <i className="bi bi-check2"></i>
-                  <p>
-                    <strong>Innovative Solutions</strong>
-                    <small>Designed around you</small>
-                  </p>
-                </div>
-              </div>
-              <div className="col-12 col-sm-6 col-lg-3">
-                <div className="trust-item">
-                  <i className="bi bi-check2"></i>
-                  <p>
-                    <strong>Reliable Technology</strong>
-                    <small>Built to perform</small>
-                  </p>
-                </div>
-              </div>
-              <div className="col-12 col-sm-6 col-lg-3">
-                <div className="trust-item">
-                  <i className="bi bi-check2"></i>
-                  <p>
-                    <strong>Scalable Systems</strong>
-                    <small>Ready to grow</small>
-                  </p>
-                </div>
-              </div>
-              <div className="col-12 col-sm-6 col-lg-3">
-                <div className="trust-item border-0">
-                  <i className="bi bi-check2"></i>
-                  <p>
-                    <strong>Client Focused</strong>
-                    <small>Close collaboration</small>
-                  </p>
+                  <TiltCard className="device-mock device-mock-laptop" maxTilt={4} lift={0}>
+                    <div className="device-screen">
+                      <strong>Build</strong>
+                      <strong>Innovate</strong>
+                      <strong>Grow</strong>
+                      <small>YOUR TECHNOLOGY PARTNER</small>
+                    </div>
+                    <div className="device-base"></div>
+                  </TiltCard>
+                  <div className="device-mock device-mock-phone">
+                    <strong>Great Ideas</strong>
+                    <strong>Better Solutions</strong>
+                  </div>
                 </div>
               </div>
             </div>
@@ -174,105 +152,85 @@ export default function Home() {
         <section className="section services" id="services">
           <div className="container">
             <div className="section-heading text-center reveal">
-              <p className="eyebrow justify-content-center">
-                <span></span>WHAT WE DO<span></span>
-              </p>
+              <p className="eyebrow justify-content-center">OUR SERVICES</p>
               <h2>
-                Digital capability, <em>built end to end.</em>
+                What <em>We Do</em>
               </h2>
-              <p>Everything you need to transform an ambitious idea into a polished, powerful digital solution.</p>
+              <p>From idea to implementation, we provide end-to-end digital solutions for businesses of all sizes.</p>
             </div>
 
             <div className="row g-4">
-              <div className="col-md-6 col-xl-4 reveal">
-                <article className="service-card h-100">
-                  <div className="service-top">
+              <div className="col-md-6 col-lg-4 reveal">
+                <TiltCard className="service-card h-100" maxTilt={5}>
+                  <div className="service-icon">
                     <i className="bi bi-code-slash"></i>
-                    <small>01</small>
                   </div>
                   <h3>Web Development</h3>
-                  <p>Fast, responsive websites and web applications that sharpen your presence and turn visits into opportunities.</p>
-                  <div className="tag-list">
-                    <span>Company sites</span>
-                    <span>E-commerce</span>
-                    <span>Web apps</span>
-                  </div>
-                </article>
+                  <p>Modern, responsive and scalable websites tailored to your business.</p>
+                  <a className="service-link" href="#contact">
+                    Learn More <i className="bi bi-arrow-right"></i>
+                  </a>
+                </TiltCard>
               </div>
-              <div className="col-md-6 col-xl-4 reveal">
-                <article className="service-card h-100">
-                  <div className="service-top">
-                    <i className="bi bi-layers"></i>
-                    <small>02</small>
-                  </div>
-                  <h3>Software Solutions</h3>
-                  <p>Purpose-built systems that streamline operations, reduce repetitive work and give your team room to grow.</p>
-                  <div className="tag-list">
-                    <span>Business systems</span>
-                    <span>CRM</span>
-                    <span>Dashboards</span>
-                  </div>
-                </article>
-              </div>
-              <div className="col-md-6 col-xl-4 reveal">
-                <article className="service-card h-100">
-                  <div className="service-top">
+              <div className="col-md-6 col-lg-4 reveal">
+                <TiltCard className="service-card h-100" maxTilt={5}>
+                  <div className="service-icon">
                     <i className="bi bi-phone"></i>
-                    <small>03</small>
                   </div>
                   <h3>Mobile App Development</h3>
-                  <p>Intuitive mobile experiences designed around real users, reliable performance and everyday ease.</p>
-                  <div className="tag-list">
-                    <span>Android</span>
-                    <span>Cross-platform</span>
-                    <span>Prototypes</span>
-                  </div>
-                </article>
+                  <p>Powerful mobile applications for Android, iOS and cross-platform.</p>
+                  <a className="service-link" href="#contact">
+                    Learn More <i className="bi bi-arrow-right"></i>
+                  </a>
+                </TiltCard>
               </div>
-              <div className="col-md-6 col-xl-4 reveal">
-                <article className="service-card h-100">
-                  <div className="service-top">
+              <div className="col-md-6 col-lg-4 reveal">
+                <TiltCard className="service-card h-100" maxTilt={5}>
+                  <div className="service-icon">
+                    <i className="bi bi-cloud"></i>
+                  </div>
+                  <h3>Cloud &amp; Deployment</h3>
+                  <p>Secure and scalable cloud infrastructure and deployment.</p>
+                  <a className="service-link" href="#contact">
+                    Learn More <i className="bi bi-arrow-right"></i>
+                  </a>
+                </TiltCard>
+              </div>
+              <div className="col-md-6 col-lg-4 reveal">
+                <TiltCard className="service-card h-100" maxTilt={5}>
+                  <div className="service-icon">
+                    <i className="bi bi-layers"></i>
+                  </div>
+                  <h3>Business Systems</h3>
+                  <p>Custom systems to automate and streamline your operations.</p>
+                  <a className="service-link" href="#contact">
+                    Learn More <i className="bi bi-arrow-right"></i>
+                  </a>
+                </TiltCard>
+              </div>
+              <div className="col-md-6 col-lg-4 reveal">
+                <TiltCard className="service-card h-100" maxTilt={5}>
+                  <div className="service-icon">
                     <i className="bi bi-bezier2"></i>
-                    <small>04</small>
                   </div>
                   <h3>UI / UX Design</h3>
-                  <p>Clear, thoughtful interfaces that make complex products feel simple and every interaction feel considered.</p>
-                  <div className="tag-list">
-                    <span>Product UI</span>
-                    <span>Wireframes</span>
-                    <span>Design systems</span>
-                  </div>
-                </article>
+                  <p>Clear, thoughtful interfaces that make complex products feel simple.</p>
+                  <a className="service-link" href="#contact">
+                    Learn More <i className="bi bi-arrow-right"></i>
+                  </a>
+                </TiltCard>
               </div>
-              <div className="col-md-6 col-xl-4 reveal">
-                <article className="service-card h-100">
-                  <div className="service-top">
-                    <i className="bi bi-cloud"></i>
-                    <small>05</small>
-                  </div>
-                  <h3>Cloud & Deployment</h3>
-                  <p>Dependable deployment and hosting setups that keep your product secure, available and ready to scale.</p>
-                  <div className="tag-list">
-                    <span>Hosting</span>
-                    <span>Deployment</span>
-                    <span>Optimization</span>
-                  </div>
-                </article>
-              </div>
-              <div className="col-md-6 col-xl-4 reveal">
-                <article className="service-card h-100">
-                  <div className="service-top">
+              <div className="col-md-6 col-lg-4 reveal">
+                <TiltCard className="service-card h-100" maxTilt={5}>
+                  <div className="service-icon">
                     <i className="bi bi-graph-up-arrow"></i>
-                    <small>06</small>
                   </div>
                   <h3>IT Consulting</h3>
-                  <p>Practical technology guidance that helps you choose the right tools, roadmap and path forward.</p>
-                  <div className="tag-list">
-                    <span>Strategy</span>
-                    <span>Architecture</span>
-                    <span>Support</span>
-                  </div>
-                </article>
+                  <p>Expert guidance to help you make the right technology decisions.</p>
+                  <a className="service-link" href="#contact">
+                    Learn More <i className="bi bi-arrow-right"></i>
+                  </a>
+                </TiltCard>
               </div>
             </div>
           </div>
@@ -282,72 +240,52 @@ export default function Home() {
           <div className="container">
             <div className="row align-items-center g-5">
               <div className="col-lg-6 order-2 order-lg-1">
-                <div className="about-visual reveal">
-                  <img src="/images/aureus-technologies-logo.png" alt="Aureus Technologies logo" loading="lazy" />
+                <div className="about-visual-wrap reveal">
+                  <TiltCard className="about-visual" maxTilt={6} lift={0}>
+                    <img src="/images/aureus-technologies-logo.png" alt="Aureus Technologies logo" loading="lazy" />
+                  </TiltCard>
                   <div className="about-stamp">
                     <strong>AT</strong>
                     <small>DESIGN • BUILD • EVOLVE</small>
+                  </div>
+                  <div className="quote-card">
+                    <i className="bi bi-quote"></i>
+                    <p>We’d rather build one thing properly than promise everything and deliver less.</p>
+                    <small>— Aureus Technologies</small>
                   </div>
                 </div>
               </div>
               <div className="col-lg-6 order-1 order-lg-2">
                 <div className="about-copy reveal">
-                  <p className="eyebrow">
-                    <span></span>ABOUT AUREUS
-                  </p>
+                  <p className="eyebrow">WHY CHOOSE AUREUS</p>
                   <h2>
-                    Technology built around <em>your vision.</em>
+                    More Than Just <em>Technology</em>
                   </h2>
                   <p className="lead">
-                    Aureus Technologies is a software and digital solutions company focused on building modern, reliable
-                    and user-friendly technology.
+                    Aureus Technologies is a Sri Lanka-based software studio building websites, business systems
+                    and mobile apps for clients who need things to actually work, not just look good.
                   </p>
                   <p>
-                    We work with individuals, startups and businesses to turn ideas into professional digital
-                    products—from modern websites and management systems to mobile applications and custom software.
+                    We work directly with founders, small teams and growing businesses—with no account managers
+                    or handoffs in between.
                   </p>
-                  <blockquote>
-                    <i className="bi bi-stars"></i>
-                    <strong>Our mission is simple: turn ideas into powerful digital solutions.</strong>
-                  </blockquote>
-                  <div className="row g-4 about-values">
-                    <div className="col-sm-6">
-                      <div>
-                        <i className="bi bi-check2"></i>
-                        <p>
-                          <strong>Modern Design</strong>
-                          <small>Crafted for current expectations</small>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div>
-                        <i className="bi bi-check2"></i>
-                        <p>
-                          <strong>Custom Development</strong>
-                          <small>Tailored to your requirements</small>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div>
-                        <i className="bi bi-check2"></i>
-                        <p>
-                          <strong>Responsive by Default</strong>
-                          <small>Ready for every screen</small>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div>
-                        <i className="bi bi-check2"></i>
-                        <p>
-                          <strong>Long-Term Support</strong>
-                          <small>Here beyond the launch</small>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <ul className="about-checklist">
+                    <li>
+                      <i className="bi bi-check2"></i>Client-focused approach
+                    </li>
+                    <li>
+                      <i className="bi bi-check2"></i>Modern and scalable technologies
+                    </li>
+                    <li>
+                      <i className="bi bi-check2"></i>Reliable support and maintenance
+                    </li>
+                    <li>
+                      <i className="bi bi-check2"></i>Passionate and experienced team
+                    </li>
+                  </ul>
+                  <a className="btn-outline-gold" href="#contact">
+                    Get In Touch <i className="bi bi-arrow-right"></i>
+                  </a>
                 </div>
               </div>
             </div>
@@ -358,78 +296,72 @@ export default function Home() {
           <div className="container">
             <div className="row align-items-end g-4 section-split reveal">
               <div className="col-lg-7">
-                <p className="eyebrow">
-                  <span></span>SELECTED WORK
-                </p>
+                <p className="eyebrow">FEATURED WORK</p>
                 <h2>
-                  Solutions that make <em>work feel simpler.</em>
+                  Our Recent <em>Projects</em>
                 </h2>
               </div>
               <div className="col-lg-5">
                 <p>
-                  Demonstration concepts showing how we approach real business challenges with clarity, care and
-                  measurable purpose.
+                  Concept case studies showing how we approach real problems—from workshop management software
+                  to marketing sites built to convert visitors.
                 </p>
               </div>
             </div>
 
-            <div className="projects">
+            <div className="row g-4">
               {projects.map((project) => (
-                <article className="project-card reveal" key={project.number}>
-                  <div className="row g-0">
-                    <div className="col-lg-7">
-                      <div className={`project-visual${project.variant ? ` ${project.variant}` : ""}`}>
-                        <span className="project-number">{project.number}</span>
-                        <div className="mock-app">
-                          <div className="mock-bar">
-                            <i></i>
-                            <i></i>
-                            <i></i>
-                          </div>
-                          <div className="mock-body">
-                            <aside>
-                              <b>AT</b>
-                              <span></span>
-                              <span></span>
-                              <span></span>
-                            </aside>
-                            <main>
-                              <div className="mock-title"></div>
-                              <div className="mock-stats">
-                                <i></i>
-                                <i></i>
-                                <i></i>
-                              </div>
-                              <div className="mock-chart">
-                                <b></b>
-                                <b></b>
-                                <b></b>
-                                <b></b>
-                                <b></b>
-                                <b></b>
-                              </div>
-                            </main>
-                          </div>
+                <div className="col-md-6" key={project.number}>
+                  <TiltCard className="project-card h-100" maxTilt={3} lift={0}>
+                    <div className={`project-visual${project.variant ? ` ${project.variant}` : ""}`}>
+                      <span className="project-number">{project.number}</span>
+                      <div className="mock-app">
+                        <div className="mock-bar">
+                          <i></i>
+                          <i></i>
+                          <i></i>
+                        </div>
+                        <div className="mock-body">
+                          <aside>
+                            <b>AT</b>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </aside>
+                          <main>
+                            <div className="mock-title"></div>
+                            <div className="mock-stats">
+                              <i></i>
+                              <i></i>
+                              <i></i>
+                            </div>
+                            <div className="mock-chart">
+                              <b></b>
+                              <b></b>
+                              <b></b>
+                              <b></b>
+                              <b></b>
+                              <b></b>
+                            </div>
+                          </main>
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-5 d-flex">
-                      <div className="project-copy">
-                        <small>{project.category}</small>
-                        <h3>{project.title}</h3>
-                        <p>{project.description}</p>
-                        <div className="tag-list">
-                          {project.tags.map((tag) => (
-                            <span key={tag}>{tag}</span>
-                          ))}
-                        </div>
-                        <a href="#contact">
-                          Discuss a similar project <i className="bi bi-arrow-right"></i>
-                        </a>
+                    <div className="project-copy">
+                      <small>{project.category}</small>
+                      <h3>{project.title}</h3>
+                      <p>{project.description}</p>
+                      <div className="tag-list">
+                        {project.tags.map((tag) => (
+                          <span key={tag}>{tag}</span>
+                        ))}
                       </div>
+                      <a href="#contact">
+                        Discuss a similar project <i className="bi bi-arrow-right"></i>
+                      </a>
                     </div>
-                  </div>
-                </article>
+                  </TiltCard>
+                </div>
               ))}
             </div>
           </div>
@@ -438,11 +370,9 @@ export default function Home() {
         <section className="section process" id="process">
           <div className="container">
             <div className="section-heading text-center reveal">
-              <p className="eyebrow justify-content-center">
-                <span></span>HOW WE WORK<span></span>
-              </p>
+              <p className="eyebrow justify-content-center">HOW WE WORK</p>
               <h2>
-                From first conversation <em>to launch.</em>
+                From First Conversation <em>to Launch</em>
               </h2>
               <p>A transparent, collaborative process that keeps the project moving and you in the loop.</p>
             </div>
@@ -471,7 +401,7 @@ export default function Home() {
               <div className="col-sm-6 col-lg-3 reveal">
                 <article className="process-step">
                   <div className="step-number">04</div>
-                  <h3>Launch & Support</h3>
+                  <h3>Launch &amp; Support</h3>
                   <p>We test, deploy and stay close as your solution moves into the real world.</p>
                 </article>
               </div>
@@ -483,9 +413,7 @@ export default function Home() {
           <div className="container">
             <div className="row align-items-end g-4 mb-5 reveal">
               <div className="col-lg-7">
-                <p className="eyebrow">
-                  <span></span>OUR TOOLKIT
-                </p>
+                <p className="eyebrow">OUR TOOLKIT</p>
                 <h2>Technologies we work with</h2>
               </div>
               <div className="col-lg-5">
@@ -493,63 +421,52 @@ export default function Home() {
               </div>
             </div>
             <div className="tech-grid reveal">
-              <span>
-                <b>01</b>HTML5
-              </span>
-              <span>
-                <b>02</b>CSS3
-              </span>
-              <span>
-                <b>03</b>JavaScript
-              </span>
-              <span>
-                <b>04</b>Bootstrap
-              </span>
-              <span>
-                <b>05</b>Laravel
-              </span>
-              <span>
-                <b>06</b>PHP
-              </span>
-              <span>
-                <b>07</b>ASP.NET
-              </span>
-              <span>
-                <b>08</b>C#
-              </span>
-              <span>
-                <b>09</b>SQL Server
-              </span>
-              <span>
-                <b>10</b>MySQL
-              </span>
-              <span>
-                <b>11</b>Android
-              </span>
-              <span>
-                <b>12</b>Git
-              </span>
+              <span><b>01</b>HTML5</span>
+              <span><b>02</b>CSS3</span>
+              <span><b>03</b>JavaScript</span>
+              <span><b>04</b>Bootstrap</span>
+              <span><b>05</b>Laravel</span>
+              <span><b>06</b>PHP</span>
+              <span><b>07</b>ASP.NET</span>
+              <span><b>08</b>C#</span>
+              <span><b>09</b>SQL Server</span>
+              <span><b>10</b>MySQL</span>
+              <span><b>11</b>Android</span>
+              <span><b>12</b>Git</span>
             </div>
           </div>
         </section>
 
+        <section className="cta-band">
+          <div className="cta-band-glow">
+            <Hero3D />
+          </div>
+          <div className="container position-relative text-center">
+            <p className="eyebrow-line justify-content-center light">LET’S BUILD TOGETHER</p>
+            <h2>
+              Ready to Start Your Next <em>Project?</em>
+            </h2>
+            <p>Get in touch with us today and let’s turn your ideas into a working product.</p>
+            <a className="btn-gold" href="#contact">
+              Contact Us <i className="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </section>
+
         <section className="section contact" id="contact">
-          <div className="contact-orb"></div>
           <div className="container position-relative">
             <div className="row g-5 align-items-start">
               <div className="col-lg-5">
                 <div className="contact-copy reveal">
-                  <p className="eyebrow">
-                    <span></span>START A CONVERSATION
-                  </p>
+                  <p className="eyebrow">START A CONVERSATION</p>
                   <h2>
                     Have an idea?
                     <br />
                     <em>Let’s build it.</em>
                   </h2>
                   <p>
-                    Tell us what you’re imagining. We’ll help you find the clearest path from concept to a professional
-                    digital solution.
+                    Tell us what you’re building and who it’s for. We’ll reply with next steps and a realistic
+                    estimate—no generic sales pitch.
                   </p>
                   <div className="contact-note">
                     <i className="bi bi-stars"></i>
@@ -654,8 +571,19 @@ export default function Home() {
                   <small>TECHNOLOGIES</small>
                 </span>
               </a>
-              <p>Building smart solutions for a digital future.</p>
-              <small>Turning ideas into powerful digital solutions.</small>
+              <p>Websites, software and mobile apps for teams who need things to work.</p>
+              <small>Based in Sri Lanka, working with clients worldwide.</small>
+              <div className="footer-social">
+                <a href="https://web.facebook.com/profile.php?id=61592797191408" target="_blank" rel="noopener" aria-label="Facebook">
+                  <i className="bi bi-facebook"></i>
+                </a>
+                <a href="https://wa.me/94769049237" target="_blank" rel="noopener" aria-label="WhatsApp">
+                  <i className="bi bi-whatsapp"></i>
+                </a>
+                <a href="mailto:esmunasinghe@gmail.com" aria-label="Email">
+                  <i className="bi bi-envelope"></i>
+                </a>
+              </div>
             </div>
             <div className="col-6 col-md-4 col-lg">
               <h3>Company</h3>
@@ -672,14 +600,13 @@ export default function Home() {
               <a href="#services">UI / UX</a>
             </div>
             <div className="col-12 col-md-4 col-lg">
-              <h3>Connect</h3>
-              <a href="https://web.facebook.com/profile.php?id=61592797191408" target="_blank" rel="noopener">
-                Facebook
+              <h3>Get In Touch</h3>
+              <a className="footer-contact-line" href="tel:+94769049237">
+                <i className="bi bi-telephone"></i> +94 76 904 9237
               </a>
-              <a href="https://wa.me/94769049237" target="_blank" rel="noopener">
-                WhatsApp
+              <a className="footer-contact-line" href="mailto:esmunasinghe@gmail.com">
+                <i className="bi bi-envelope"></i> esmunasinghe@gmail.com
               </a>
-              <a href="mailto:esmunasinghe@gmail.com">Email</a>
             </div>
           </div>
           <div className="footer-bottom d-flex flex-column flex-sm-row justify-content-between gap-2">

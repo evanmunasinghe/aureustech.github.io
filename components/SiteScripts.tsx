@@ -19,9 +19,19 @@ export default function SiteScripts() {
 
       const navLinks = [...document.querySelectorAll<HTMLAnchorElement>(".navbar .nav-link")];
       const sections = [...document.querySelectorAll<HTMLElement>("main section[id]")];
+      const heroOrb = document.querySelector<HTMLElement>(".hero-orb");
+      const heroGrid = document.querySelector<HTMLElement>(".hero-grid-lines");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       const updateHeader = () => {
         header.classList.toggle("scrolled", window.scrollY > 24);
+      };
+
+      const updateParallax = () => {
+        if (reduceMotion) return;
+        const y = window.scrollY;
+        if (heroOrb) heroOrb.style.transform = `translate3d(0, ${y * 0.18}px, 0)`;
+        if (heroGrid) heroGrid.style.transform = `translate3d(0, ${y * 0.08}px, 0)`;
       };
 
       const updateActiveLink = () => {
@@ -40,6 +50,7 @@ export default function SiteScripts() {
       const onScroll = () => {
         updateHeader();
         updateActiveLink();
+        updateParallax();
       };
 
       const onNavLinkClick = () => {
@@ -87,6 +98,7 @@ export default function SiteScripts() {
 
       updateHeader();
       updateActiveLink();
+      updateParallax();
       document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
       navLinks.forEach((link) => link.addEventListener("click", onNavLinkClick));
       form?.addEventListener("submit", onSubmit);

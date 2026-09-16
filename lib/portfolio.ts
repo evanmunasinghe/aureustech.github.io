@@ -19,9 +19,9 @@ export const projects: PortfolioProject[] = [
   {
     number: "02",
     category: "WEB DESIGN & DEVELOPMENT",
-    title: "Corporate Digital Presence",
+    title: "Meridian Consulting Site",
     description:
-      "A polished, conversion-focused company website built to communicate value and invite customer action.",
+      "A fast, SEO-ready marketing site for a consulting firm, built around clear calls to action and lead capture.",
     tags: ["Responsive UI", "Performance", "SEO"],
     variant: "blue",
   },
