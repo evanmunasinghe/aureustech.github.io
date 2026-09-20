@@ -1,6 +1,7 @@
 import { projects } from "@/lib/portfolio";
 import TiltCard from "@/components/marketing/TiltCard";
 import Hero3D from "@/components/marketing/Hero3D";
+import ScrollHero from "@/components/marketing/ScrollHero";
 
 export default function Home() {
   return (
@@ -79,75 +80,7 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="hero" id="home">
-          <div className="container position-relative">
-            <div className="row align-items-center g-5">
-              <div className="col-lg-6">
-                <div className="hero-copy reveal visible">
-                  <p className="eyebrow-line">
-                    IDEAS <i className="bi bi-dot"></i> TECHNOLOGY <i className="bi bi-dot"></i> REAL IMPACT
-                  </p>
-                  <h1>
-                    Digital Solutions
-                    <br />
-                    <em>for a Digital Future</em>
-                  </h1>
-                  <p className="hero-lead">
-                    We design and develop modern websites, software applications and digital experiences that
-                    help businesses grow, automate and move with confidence.
-                  </p>
-                  <div className="hero-actions d-flex flex-column flex-sm-row gap-3">
-                    <a className="btn-gold" href="#contact">
-                      Start Your Project <i className="bi bi-arrow-right"></i>
-                    </a>
-                    <a className="btn-outline-gold" href="#portfolio">
-                      Our Services
-                    </a>
-                  </div>
-                  <div className="hero-stats">
-                    <div>
-                      <strong>Client-Focused</strong>
-                      <small>Direct communication, always</small>
-                    </div>
-                    <div>
-                      <strong>Modern &amp; Scalable</strong>
-                      <small>Built with the right tools</small>
-                    </div>
-                    <div>
-                      <strong>Sri Lanka &amp; Worldwide</strong>
-                      <small>Wherever your business is</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="hero-visual reveal visible">
-                  <div className="hero-photo">
-                    <Hero3D />
-                    <div className="hero-side-caption">
-                      <span>Technology</span>
-                      <span>People</span>
-                      <span>Progress</span>
-                    </div>
-                  </div>
-                  <TiltCard className="device-mock device-mock-laptop" maxTilt={4} lift={0}>
-                    <div className="device-screen">
-                      <strong>Build</strong>
-                      <strong>Innovate</strong>
-                      <strong>Grow</strong>
-                      <small>YOUR TECHNOLOGY PARTNER</small>
-                    </div>
-                    <div className="device-base"></div>
-                  </TiltCard>
-                  <div className="device-mock device-mock-phone">
-                    <strong>Great Ideas</strong>
-                    <strong>Better Solutions</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ScrollHero />
 
         <section className="section services" id="services">
           <div className="container">
@@ -442,7 +375,7 @@ export default function Home() {
             <Hero3D />
           </div>
           <div className="container position-relative text-center">
-            <p className="eyebrow-line justify-content-center light">LET’S BUILD TOGETHER</p>
+            <p className="eyebrow-line justify-content-center">LET’S BUILD TOGETHER</p>
             <h2>
               Ready to Start Your Next <em>Project?</em>
             </h2>
