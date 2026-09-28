@@ -24,6 +24,7 @@ const NAV = [
       { href: "/dashboard/projects", label: "Projects", icon: "bi-briefcase" },
       { href: "/dashboard/kanban", label: "Kanban Board", icon: "bi-kanban" },
       { href: "/dashboard/sprints", label: "Sprints", icon: "bi-list-check" },
+      { href: "/dashboard/portfolio", label: "Portfolio", icon: "bi-images", adminOnly: true },
     ],
   },
   {
@@ -39,6 +40,7 @@ const NAV = [
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { currentUser, logout } = useData();
+  const isStaffAdmin = currentUser?.role === "ADMIN" || currentUser?.role === "SUPERADMIN";
 
   return (
     <div className="app app-shell">
@@ -54,7 +56,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         {NAV.map((group) => (
           <div key={group.group}>
             <div className="app-nav-group">{group.group}</div>
-            {group.items.map((item) => (
+            {group.items
+              .filter((item) => !("adminOnly" in item) || isStaffAdmin)
+              .map((item) => (
               <Link
                 key={item.href}
                 href={item.href}

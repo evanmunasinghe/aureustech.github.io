@@ -1,20 +1,20 @@
-import { projects } from "@/lib/portfolio";
+import { getProjects } from "@/lib/portfolio-server";
 import TiltCard from "@/components/marketing/TiltCard";
 import Hero3D from "@/components/marketing/Hero3D";
 import ScrollHero from "@/components/marketing/ScrollHero";
 
-export default function Home() {
+// Portfolio is edited from the admin dashboard, so render per request.
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const projects = await getProjects();
   return (
     <>
       <header className="site-header fixed-top" id="siteHeader">
         <nav className="navbar navbar-expand-lg" aria-label="Main navigation">
           <div className="container">
             <a className="brand" href="#home" aria-label="Aureus Technologies home">
-              <img className="brand-logo" src="/images/aureus-technologies-logo.png" alt="" />
-              <span className="brand-copy">
-                <strong>AUREUS</strong>
-                <small>TECHNOLOGIES</small>
-              </span>
+              <img className="brand-logo" src="/images/aureus-emblem-mark.png" alt="Aureus Technologies" />
             </a>
 
             <button
@@ -243,11 +243,11 @@ export default function Home() {
             </div>
 
             <div className="row g-4">
-              {projects.map((project) => (
-                <div className="col-md-6" key={project.number}>
+              {projects.map((project, i) => (
+                <div className="col-md-6" key={project.id ?? project.title}>
                   <TiltCard className="project-card h-100" maxTilt={3} lift={0}>
                     <div className={`project-visual${project.variant ? ` ${project.variant}` : ""}`}>
-                      <span className="project-number">{project.number}</span>
+                      <span className="project-number">{String(i + 1).padStart(2, "0")}</span>
                       <div className="mock-app">
                         <div className="mock-bar">
                           <i></i>
@@ -498,11 +498,7 @@ export default function Home() {
           <div className="row g-5 footer-main">
             <div className="col-lg-5">
               <a className="brand mb-4" href="#home" aria-label="Aureus Technologies home">
-                <img className="brand-logo" src="/images/aureus-technologies-logo.png" alt="" />
-                <span className="brand-copy">
-                  <strong>AUREUS</strong>
-                  <small>TECHNOLOGIES</small>
-                </span>
+                <img className="brand-logo" src="/images/aureus-emblem-mark.png" alt="Aureus Technologies" />
               </a>
               <p>Websites, software and mobile apps for teams who need things to work.</p>
               <small>Based in Sri Lanka, working with clients worldwide.</small>

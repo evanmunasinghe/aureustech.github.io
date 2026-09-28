@@ -5,6 +5,13 @@ import { useEffect, useRef } from "react";
 const FRAME_COUNT = 240;
 const frameUrl = (index: number) => `/images/hero-frames/frame-${String(index + 1).padStart(4, "0")}.webp`;
 const REVEAL_START = 0.78;
+const SNAP_EPSILON = 0.0008;
+// However fast someone scrolls, the sequence can never play faster than this
+// constant speed — like holding the down-arrow key: steady velocity, no
+// acceleration ramp, no ease-out, just even continuous motion that stops
+// cleanly the instant it reaches the target.
+const MIN_PLAYTHROUGH_SECONDS = 3.5;
+const MAX_PROGRESS_PER_SECOND = 1 / MIN_PLAYTHROUGH_SECONDS;
 
 function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, canvas: HTMLCanvasElement) {
   const canvasW = canvas.width;
@@ -101,24 +108,23 @@ export default function ScrollHero() {
       images.push(img);
     }
 
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
-      applySmoothing();
-      drawFrame(currentFrame);
-    };
-
-    let ticking = false;
-
-    const update = () => {
-      ticking = false;
+    const computeTargetProgress = () => {
       const rect = section.getBoundingClientRect();
       const scrollable = rect.height - window.innerHeight;
-      const progress = scrollable > 0 ? Math.min(1, Math.max(0, -rect.top / scrollable)) : 0;
-      const frameIndex = Math.round(progress * (FRAME_COUNT - 1));
+      return scrollable > 0 ? Math.min(1, Math.max(0, -rect.top / scrollable)) : 0;
+    };
 
+    // The displayed progress chases the scroll-derived target at a capped
+    // rate, so however fast someone scrolls, playback never speeds up past
+    // MAX_PROGRESS_PER_SECOND — it just falls behind and catches up smoothly.
+    let targetProgress = 0;
+    let displayProgress = 0;
+    let rafId = 0;
+    let looping = false;
+    let lastTime = 0;
+
+    const applyProgress = (progress: number) => {
+      const frameIndex = Math.round(progress * (FRAME_COUNT - 1));
       if (frameIndex !== currentFrame) {
         currentFrame = frameIndex;
         drawFrame(frameIndex);
@@ -133,19 +139,59 @@ export default function ScrollHero() {
       if (progressBar) progressBar.style.width = `${progress * 100}%`;
     };
 
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
+    const loop = (now: number) => {
+      const dt = lastTime ? Math.min((now - lastTime) / 1000, 0.1) : 1 / 60;
+      lastTime = now;
+
+      const diff = targetProgress - displayProgress;
+      // Constant speed toward the target, capped, never eased — matches the
+      // feel of holding the down-arrow key rather than a spring settling.
+      const maxStep = MAX_PROGRESS_PER_SECOND * dt;
+      const stepMagnitude = Math.min(maxStep, Math.abs(diff));
+      displayProgress += Math.sign(diff) * stepMagnitude;
+
+      if (Math.abs(targetProgress - displayProgress) < SNAP_EPSILON) {
+        displayProgress = targetProgress;
+        applyProgress(displayProgress);
+        looping = false;
+        lastTime = 0;
+        return;
+      }
+      applyProgress(displayProgress);
+      rafId = requestAnimationFrame(loop);
+    };
+
+    const ensureLoop = () => {
+      if (!looping) {
+        looping = true;
+        lastTime = 0;
+        rafId = requestAnimationFrame(loop);
       }
     };
 
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      applySmoothing();
+      currentFrame = -1; // canvas bitmap was cleared by the resize, force a redraw
+      applyProgress(displayProgress);
+    };
+
+    const onScroll = () => {
+      targetProgress = computeTargetProgress();
+      ensureLoop();
+    };
+
+    targetProgress = computeTargetProgress();
+    displayProgress = targetProgress;
     resize();
-    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", resize);
 
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
     };
