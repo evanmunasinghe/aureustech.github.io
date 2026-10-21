@@ -19,9 +19,16 @@ export default function SiteScripts() {
 
       const navLinks = [...document.querySelectorAll<HTMLAnchorElement>(".navbar .nav-link")];
       const sections = [...document.querySelectorAll<HTMLElement>("main section[id]")];
+      const heroSection = document.querySelector<HTMLElement>(".scroll-hero");
 
       const updateHeader = () => {
-        header.classList.toggle("scrolled", window.scrollY > 24);
+        let threshold = 24;
+        if (heroSection) {
+          const rect = heroSection.getBoundingClientRect();
+          const heroBottom = rect.top + window.scrollY + rect.height;
+          threshold = heroBottom - window.innerHeight;
+        }
+        header.classList.toggle("scrolled", window.scrollY >= threshold);
       };
 
       const updateActiveLink = () => {
@@ -85,10 +92,15 @@ export default function SiteScripts() {
         { threshold: 0.13 }
       );
 
+      const onNavShow = () => header.classList.add("menu-open");
+      const onNavHidden = () => header.classList.remove("menu-open");
+
       updateHeader();
       updateActiveLink();
       document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
       navLinks.forEach((link) => link.addEventListener("click", onNavLinkClick));
+      nav.addEventListener("show.bs.collapse", onNavShow);
+      nav.addEventListener("hidden.bs.collapse", onNavHidden);
       form?.addEventListener("submit", onSubmit);
       if (year) year.textContent = String(new Date().getFullYear());
       window.addEventListener("scroll", onScroll, { passive: true });

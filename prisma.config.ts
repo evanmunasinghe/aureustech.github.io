@@ -3,12 +3,28 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
+// The schema engine, like the runtime driver (see lib/db.ts), ignores the
+// MySQL-style `ssl-mode=required` that TiDB Cloud uses and connects without TLS,
+// which TiDB refuses. Its own equivalent is `sslaccept=strict`.
+function cliDatabaseUrl(raw: string | undefined): string | undefined {
+  if (!raw) return raw;
+  const url = new URL(raw);
+  const sslMode = url.searchParams.get("ssl-mode");
+  if (sslMode !== null) {
+    url.searchParams.delete("ssl-mode");
+    if (sslMode.toLowerCase() !== "disabled" && !url.searchParams.has("sslaccept")) {
+      url.searchParams.set("sslaccept", "strict");
+    }
+  }
+  return url.toString();
+}
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: cliDatabaseUrl(process.env["DATABASE_URL"]),
   },
 });

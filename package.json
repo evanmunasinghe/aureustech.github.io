@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && NEXT_PUBLIC_ENV=production next build && node scripts/prepare-sites.mjs",
-    "build:demo": "prisma generate && NEXT_PUBLIC_ENV=demo next build && node scripts/prepare-sites.mjs"
+    "build": "prisma generate && NEXT_PUBLIC_ENV=production next build",
+    "start": "next start",
+    "build:demo": "prisma generate && NEXT_PUBLIC_ENV=demo next build"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -24,6 +25,7 @@
     "@types/node": "^26.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.183.1",
     "playwright": "^1.62.1",
     "prisma": "^7.9.1",
     "typescript": "^5.9.3"

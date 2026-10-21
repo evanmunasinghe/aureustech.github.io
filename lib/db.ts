@@ -28,13 +28,35 @@ export const DATABASE_URL = process.env.DATABASE_URL;
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
+// Two defaults of the MariaDB driver behind the Prisma adapter break remote
+// TiDB Cloud connections, and both surface as the same vague "pool timeout":
+//  1. It only understands `ssl=true` and silently ignores the MySQL-style
+//     `ssl-mode=required` used above, so it connects without TLS and TiDB
+//     refuses every connection ("insecure transport prohibited").
+//  2. Its ~1s connectTimeout is shorter than a TLS handshake over the internet
+//     (about 2s from Sri Lanka to ap-southeast-1), so each attempt is aborted.
+function normalizeDatabaseUrl(raw: string): string {
+  const url = new URL(raw);
+  const sslMode = url.searchParams.get("ssl-mode");
+  if (sslMode !== null) {
+    url.searchParams.delete("ssl-mode");
+    if (sslMode.toLowerCase() !== "disabled" && !url.searchParams.has("ssl")) {
+      url.searchParams.set("ssl", "true");
+    }
+  }
+  if (!url.searchParams.has("connectTimeout")) {
+    url.searchParams.set("connectTimeout", "15000");
+  }
+  return url.toString();
+}
+
 function createClient(): PrismaClient {
   if (!DATABASE_URL) {
     throw new Error(
       "DATABASE_URL is not set. Add it to .env or set it on the deployment environment."
     );
   }
-  const adapter = new PrismaMariaDb(DATABASE_URL);
+  const adapter = new PrismaMariaDb(normalizeDatabaseUrl(DATABASE_URL));
   return new PrismaClient({
     adapter,
     log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],

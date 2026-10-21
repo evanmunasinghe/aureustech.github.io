@@ -178,3 +178,13 @@ model Notification {
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
+
+model PortfolioProject {
+  id          String   @id @default(cuid())
+  category    String
+  title       String
+  description String   @db.Text
+  tags        Json
+  variant     String?
+  createdAt   DateTime @default(now())
+}
