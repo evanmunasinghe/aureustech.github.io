@@ -25,11 +25,24 @@ import type {
 } from "@/lib/types";
 import { getRepository } from "@/lib/services/repository";
 import { mentionedUserIds, userById } from "@/lib/store/selectors";
-import { authenticate, saveSelfCredential } from "@/lib/auth/mock-auth";
 
 const STORAGE_KEY = "aureus-pms-data-v1";
 const USER_KEY = "aureus-pms-user-v1";
-const AUTH_KEY = "aureus-pms-auth-v1";
+
+// JSON call to our own API; resolves to { error } instead of throwing so callers can show the message.
+async function api<T>(url: string, method = "GET", body?: unknown): Promise<T & { error?: string }> {
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+    const json = await res.json().catch(() => ({}));
+    return res.ok ? json : { ...json, error: json.error ?? "Something went wrong. Please try again." };
+  } catch {
+    return { error: "Can't reach the server. Check your connection." } as T & { error: string };
+  }
+}
 
 export interface LoginResult {
   ok: boolean;
@@ -47,6 +60,13 @@ export interface RegisterResult {
   ok: boolean;
   error: string | null;
   user: User | null;
+}
+
+export interface UserInput {
+  name: string;
+  email: string;
+  role: User["role"];
+  password?: string;
 }
 
 const uid = (prefix: string) =>
@@ -81,9 +101,11 @@ interface DataContextValue {
   authReady: boolean;
   isAuthenticated: boolean;
   authUser: User | null;
-  login: (email: string, password: string) => LoginResult;
-  registerClient: (input: RegisterClientInput) => RegisterResult;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<LoginResult>;
+  registerClient: (input: RegisterClientInput) => Promise<RegisterResult>;
+  logout: () => Promise<void>;
+  saveUser: (id: string | null, input: UserInput) => Promise<string | null>;
+  deleteUser: (id: string) => Promise<string | null>;
   createTask: (input: CreateTaskInput) => Task | null;
   createProject: (input: CreateProjectInput) => Project | null;
   updateTask: (id: string, patch: Partial<Task>) => void;
@@ -174,27 +196,27 @@ export function DataProvider({ children }: { children: ReactNode }) {
     if (data) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
+  // Users and the signed-in account come from the server; everything else is still local.
+  const refreshUsers = useCallback(async () => {
+    const users = await api<User[]>("/api/users");
+    if (Array.isArray(users)) setData((prev) => (prev ? { ...prev, users } : prev));
+  }, []);
+
   const userRestored = useRef(false);
   useEffect(() => {
     if (!data || userRestored.current) return;
     userRestored.current = true;
-    const savedAuth = window.localStorage.getItem(AUTH_KEY);
-    if (savedAuth && data.users.some((u) => u.id === savedAuth)) {
-      setAuthId(savedAuth);
-      const savedUser = window.localStorage.getItem(USER_KEY);
-      setCurrentUserId(
-        savedUser && data.users.some((u) => u.id === savedUser) ? savedUser : savedAuth
-      );
-    } else {
-      setAuthId(null);
-      setCurrentUserId(null);
-    }
-    setAuthReady(true);
-  }, [data]);
-
-  useEffect(() => {
-    if (authId) window.localStorage.setItem(AUTH_KEY, authId);
-  }, [authId]);
+    (async () => {
+      const { user } = await api<{ user: User | null }>("/api/auth");
+      if (user) {
+        await refreshUsers();
+        setAuthId(user.id);
+        const savedUser = window.localStorage.getItem(USER_KEY);
+        setCurrentUserId(user.role === "SUPERADMIN" && savedUser ? savedUser : user.id);
+      }
+      setAuthReady(true);
+    })();
+  }, [data, refreshUsers]);
 
   useEffect(() => {
     if (currentUserId) window.localStorage.setItem(USER_KEY, currentUserId);
@@ -205,55 +227,63 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const isAuthenticated = authReady && authId !== null && authUser !== null;
 
   const login = useCallback(
-    (email: string, password: string): LoginResult => {
-      const result = authenticate(email, password, data?.users ?? []);
-      if (!result.user) {
-        return { ok: false, error: result.error, user: null };
-      }
-      setAuthId(result.user.id);
-      setCurrentUserId(result.user.id);
-      return { ok: true, error: null, user: result.user };
-    },
-    [data]
-  );
-
-  const registerClient = useCallback(
-    (input: RegisterClientInput): RegisterResult => {
-      const name = input.name.trim();
-      const email = input.email.trim().toLowerCase();
-      if (!data) {
-        return { ok: false, error: "Workspace is still loading — try again in a moment.", user: null };
-      }
-      if (name.length < 2) {
-        return { ok: false, error: "Please enter your full name.", user: null };
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-        return { ok: false, error: "Please enter a valid email address.", user: null };
-      }
-      if (input.password.length < 8) {
-        return { ok: false, error: "Password must be at least 8 characters.", user: null };
-      }
-      if (data.users.some((u) => u.email.toLowerCase() === email)) {
-        return { ok: false, error: "An account with this email already exists. Try signing in.", user: null };
-      }
-      const user: User = {
-        id: uid("u"),
-        name,
-        email,
-        role: "CLIENT",
-        createdAt: new Date().toISOString(),
-      };
-      setData((prev) => (prev ? { ...prev, users: [...prev.users, user] } : prev));
-      saveSelfCredential({ userId: user.id, password: input.password });
+    async (email: string, password: string): Promise<LoginResult> => {
+      const { user, error } = await api<{ user: User }>("/api/auth", "POST", { email, password });
+      if (error) return { ok: false, error, user: null };
+      await refreshUsers();
       setAuthId(user.id);
       setCurrentUserId(user.id);
       return { ok: true, error: null, user };
     },
+    [refreshUsers]
+  );
+
+  const registerClient = useCallback(
+    async (input: RegisterClientInput): Promise<RegisterResult> => {
+      const { user, error } = await api<{ user: User }>("/api/auth/signup", "POST", input);
+      if (error) return { ok: false, error, user: null };
+      await refreshUsers();
+      setAuthId(user.id);
+      setCurrentUserId(user.id);
+      return { ok: true, error: null, user };
+    },
+    [refreshUsers]
+  );
+
+  // Create (id null) or update a user; returns an error message or null on success.
+  const saveUser = useCallback(
+    async (id: string | null, input: UserInput): Promise<string | null> => {
+      const { error } = await api(id ? `/api/users/${id}` : "/api/users", id ? "PATCH" : "POST", input);
+      if (!error) await refreshUsers();
+      return error ?? null;
+    },
+    [refreshUsers]
+  );
+
+  const deleteUser = useCallback(
+    async (id: string): Promise<string | null> => {
+      if (data?.projects.some((p) => p.clientId === id)) {
+        return "This client still owns projects. Reassign or remove them first.";
+      }
+      const { error } = await api(`/api/users/${id}`, "DELETE");
+      if (error) return error;
+      setData((prev) =>
+        prev
+          ? {
+              ...prev,
+              users: prev.users.filter((u) => u.id !== id),
+              tasks: prev.tasks.map((t) => (t.assignedTo === id ? { ...t, assignedTo: null } : t)),
+              notifications: prev.notifications.filter((n) => n.userId !== id),
+            }
+          : prev
+      );
+      return null;
+    },
     [data]
   );
 
-  const logout = useCallback(() => {
-    window.localStorage.removeItem(AUTH_KEY);
+  const logout = useCallback(async () => {
+    await api("/api/auth", "DELETE");
     window.localStorage.removeItem(USER_KEY);
     setAuthId(null);
     setCurrentUserId(null);
@@ -651,6 +681,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
       login,
       registerClient,
       logout,
+      saveUser,
+      deleteUser,
       createTask,
       createProject,
       updateTask,
@@ -677,6 +709,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
       login,
       registerClient,
       logout,
+      saveUser,
+      deleteUser,
       createTask,
       createProject,
       updateTask,

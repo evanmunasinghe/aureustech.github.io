@@ -25,6 +25,7 @@ const NAV = [
       { href: "/dashboard/kanban", label: "Kanban Board", icon: "bi-kanban" },
       { href: "/dashboard/sprints", label: "Sprints", icon: "bi-list-check" },
       { href: "/dashboard/portfolio", label: "Portfolio", icon: "bi-images", adminOnly: true },
+      { href: "/dashboard/users", label: "Users", icon: "bi-person-gear", superAdminOnly: true },
     ],
   },
   {
@@ -58,6 +59,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <div className="app-nav-group">{group.group}</div>
             {group.items
               .filter((item) => !("adminOnly" in item) || isStaffAdmin)
+              .filter((item) => !("superAdminOnly" in item) || currentUser?.role === "SUPERADMIN")
               .map((item) => (
               <Link
                 key={item.href}
@@ -101,8 +103,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               <button
                 type="button"
                 className="sidebar-tool plain"
-                onClick={() => {
-                  logout();
+                onClick={async () => {
+                  await logout();
                   window.location.href = "/";
                 }}
                 aria-label="Sign out"

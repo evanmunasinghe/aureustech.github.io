@@ -47,15 +47,14 @@ export default function Signup() {
     }
 
     setSubmitting(true);
-    window.setTimeout(() => {
-      const result = registerClient({ name, email, password });
+    registerClient({ name, email, password }).then((result) => {
       if (!result.ok) {
         setError(result.error);
         setSubmitting(false);
         return;
       }
       window.location.replace("/portal");
-    }, 250);
+    });
   };
 
   return (

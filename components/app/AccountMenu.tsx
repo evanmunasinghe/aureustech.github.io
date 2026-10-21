@@ -19,7 +19,7 @@ const initials = (name: string) =>
     .toUpperCase();
 
 export function AccountMenu({ compact = false }: { compact?: boolean }) {
-  const { data, currentUser, setCurrentUser, logout } = useData();
+  const { data, currentUser, authUser, setCurrentUser, logout } = useData();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -41,9 +41,9 @@ export function AccountMenu({ compact = false }: { compact?: boolean }) {
 
   if (!currentUser) return null;
 
-  const signOut = () => {
+  const signOut = async () => {
     setOpen(false);
-    logout();
+    await logout();
     window.location.href = "/";
   };
 
@@ -80,7 +80,7 @@ export function AccountMenu({ compact = false }: { compact?: boolean }) {
             </span>
           </div>
 
-          {data && data.users.length > 1 && (
+          {authUser?.role === "SUPERADMIN" && data && data.users.length > 1 && (
             <>
               <div className="account-pop-label">Switch account</div>
               <div className="account-pop-list">

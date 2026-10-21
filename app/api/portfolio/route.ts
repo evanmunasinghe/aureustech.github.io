@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isAdmin } from "@/lib/admin-auth";
+import { isAdmin } from "@/lib/auth/server";
 import { prisma } from "@/lib/db";
 import { parseProject } from "@/lib/portfolio";
 

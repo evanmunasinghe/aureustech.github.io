@@ -20,9 +20,9 @@ async function api(url: string, method: string, body?: unknown) {
 }
 
 export default function PortfolioAdminPage() {
-  const { currentUser } = useData();
-  const [authed, setAuthed] = useState<boolean | null>(null);
-  const [password, setPassword] = useState("");
+  const { authUser } = useData();
+  // The server checks the session too; this only decides what to show.
+  const authed = authUser?.role === "ADMIN" || authUser?.role === "SUPERADMIN";
   const [rows, setRows] = useState<PortfolioProject[]>([]);
   const [form, setForm] = useState(EMPTY);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -38,11 +38,10 @@ export default function PortfolioAdminPage() {
   }, []);
 
   useEffect(() => {
-    api("/api/admin/login", "GET").then((r) => setAuthed(r.ok), () => setAuthed(false));
     load();
   }, [load]);
 
-  // Runs a request, surfacing errors and bouncing to the login form if the session expired.
+  // Runs a request, surfacing errors.
   const run = async (fn: () => Promise<unknown>) => {
     setBusy(true);
     setError(null);
@@ -50,14 +49,13 @@ export default function PortfolioAdminPage() {
       await fn();
       await load();
     } catch (e) {
-      if ((e as { status?: number }).status === 401) setAuthed(false);
-      else setError((e as Error).message);
+      setError((e as { status?: number }).status === 401 ? "Your session expired. Sign in again." : (e as Error).message);
     } finally {
       setBusy(false);
     }
   };
 
-  if (currentUser && currentUser.role !== "ADMIN" && currentUser.role !== "SUPERADMIN") {
+  if (!authed) {
     return <div className="empty-hint">Only admins can edit the portfolio.</div>;
   }
 
@@ -101,20 +99,6 @@ export default function PortfolioAdminPage() {
       for (const p of defaultProjects) await api("/api/portfolio", "POST", p);
     });
 
-  const login = async () => {
-    setBusy(true);
-    setError(null);
-    try {
-      await api("/api/admin/login", "POST", { password });
-      setPassword("");
-      setAuthed(true);
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  };
-
   const set = (k: keyof typeof EMPTY) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.type === "checkbox" ? (e.target as HTMLInputElement).checked : e.target.value }));
 
@@ -131,38 +115,6 @@ export default function PortfolioAdminPage() {
       </div>
 
       {error && <div className="alert alert-danger">{error}</div>}
-
-      {authed === false && (
-        <form
-          className="app-card mb-3 app-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            login();
-          }}
-        >
-          <div className="app-card-head">
-            <h3>Confirm admin password</h3>
-          </div>
-          <div className="app-card-body">
-            <p className="text-muted-2" style={{ fontSize: 13 }}>
-              Saving changes to the live site needs the server-side admin password (<code>ADMIN_PASSWORD</code>).
-            </p>
-            <div className="d-flex gap-2">
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Admin password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button className="btn-app gold" disabled={busy || !password}>
-                Unlock
-              </button>
-            </div>
-          </div>
-        </form>
-      )}
 
       {authed && (
         <form

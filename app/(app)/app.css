@@ -1225,20 +1225,6 @@ kbd {
 .btn-auth:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(212, 166, 42, .25); }
 .btn-auth:disabled { opacity: .6; cursor: default; }
 
-.auth-demo-toggle { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 22px; padding: 11px 14px; border: 1px dashed var(--border); border-radius: 9px; background: transparent; color: var(--text-muted-2); font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: .2s ease; }
-.auth-demo-toggle:hover { color: var(--gold-bright); border-color: rgba(212, 166, 42, .45); }
-.auth-demo-toggle .bi-chevron-down { transition: transform .2s ease; font-size: 10px; }
-.auth-demo-toggle .bi-chevron-down.rotated { transform: rotate(180deg); }
-
-.auth-demo-grid { display: grid; gap: 6px; margin-top: 10px; }
-.auth-demo-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 12px; text-align: left; border: 1px solid var(--border); border-radius: 8px; background: transparent; transition: .2s ease; }
-.auth-demo-item:hover { border-color: #4a525e; background: var(--hover); }
-.auth-demo-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.auth-demo-label { font-size: 12.5px; font-weight: 600; color: var(--text); }
-.auth-demo-creds { font-size: 11px; color: var(--text-muted-2); font-family: ui-monospace, "SF Mono", Menlo, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.auth-demo-item > i { color: var(--muted); font-size: 15px; flex: none; }
-.auth-demo-item:hover > i { color: var(--gold-bright); }
-
 .auth-back { display: inline-flex; align-items: center; margin-top: 24px; font-size: 12.5px; color: var(--text-muted-2); text-decoration: none; }
 .auth-alt { margin: 18px 0 0; font-size: 12.5px; color: var(--text-muted-2); }
 .auth-alt a { color: var(--gold-bright); font-weight: 600; text-decoration: none; }

@@ -13,5 +13,3 @@ export type AppEnv = "local" | "demo" | "production";
 export const APP_ENV: AppEnv =
   RAW === "demo" ? "demo" : RAW === "production" || process.env.NODE_ENV === "production" ? "production" : "local";
 
-/** Demo credentials UI is only exposed on non-production environments. */
-export const SHOW_DEMO_LOGINS = APP_ENV === "local" || APP_ENV === "demo";

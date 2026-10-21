@@ -3,17 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useData } from "@/lib/store/store-context";
-import { DEMO_CREDENTIALS } from "@/lib/auth/mock-auth";
-import { SHOW_DEMO_LOGINS } from "@/lib/env";
-
-const DEMO_EMAILS: Record<string, string> = {
-  "u-superadmin": "esmunasinghe@gmail.com",
-  "u-admin": "dev@aureustechnologies.com",
-  "u-dev": "dilan@aureustechnologies.com",
-  "u-dev2": "ishara@aureustechnologies.com",
-  "u-client1": "ravindu@fleeve.lk",
-  "u-client2": "nimali@jayasuriyacorp.com",
-};
 
 const HIGHLIGHTS = [
   {
@@ -39,7 +28,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
 
   useEffect(() => {
     if (!authReady || !isAuthenticated || !authUser) return;
@@ -52,21 +40,11 @@ export default function Login() {
     if (submitting) return;
     setSubmitting(true);
     setError(null);
-    // Small delay so the button state reads as "signing in…"
-    window.setTimeout(async () => {
-      const result = login(email, password);
+    login(email, password).then((result) => {
       if (!result.ok) {
         setError(result.error);
         setSubmitting(false);
         return;
-      }
-      // Super admin's password doubles as the server-side ADMIN_PASSWORD, so unlock portfolio editing too.
-      if (result.user!.role === "SUPERADMIN") {
-        await fetch("/api/admin/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password }),
-        }).catch(() => {});
       }
       const current = window.location.pathname;
       const isClient = result.user!.role === "CLIENT";
@@ -78,13 +56,7 @@ export default function Login() {
         target = isAppPath ? current : "/dashboard";
       }
       window.location.replace(target);
-    }, 250);
-  };
-
-  const fill = (userEmail: string, userPassword: string) => {
-    setEmail(userEmail);
-    setPassword(userPassword);
-    setError(null);
+    });
   };
 
   return (
@@ -186,43 +158,6 @@ export default function Login() {
             New client? <Link href="/signup">Create an account</Link>
           </p>
 
-          {SHOW_DEMO_LOGINS && (
-            <>
-              <button
-                type="button"
-                className="auth-demo-toggle"
-                onClick={() => setShowDemo((s) => !s)}
-                aria-expanded={showDemo}
-              >
-                <i className="bi bi-key"></i> Demo access
-                <i className={`bi bi-chevron-down ms-auto${showDemo ? " rotated" : ""}`}></i>
-              </button>
-
-              {showDemo && (
-                <div className="auth-demo-grid">
-                  {DEMO_CREDENTIALS.map((cred) => {
-                    const emailValue = DEMO_EMAILS[cred.userId] ?? "";
-                    return (
-                      <button
-                        key={cred.userId}
-                        type="button"
-                        className="auth-demo-item"
-                        onClick={() => fill(emailValue, cred.password)}
-                      >
-                        <span className="auth-demo-text">
-                          <span className="auth-demo-label">{cred.label}</span>
-                          <span className="auth-demo-creds">
-                            {emailValue} · {cred.password}
-                          </span>
-                        </span>
-                        <i className="bi bi-arrow-right-short"></i>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </>
-          )}
 
           <a className="auth-back" href="/">
             <i className="bi bi-arrow-left me-1"></i> Back to site
