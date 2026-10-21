@@ -53,12 +53,20 @@ export default function Login() {
     setSubmitting(true);
     setError(null);
     // Small delay so the button state reads as "signing in…"
-    window.setTimeout(() => {
+    window.setTimeout(async () => {
       const result = login(email, password);
       if (!result.ok) {
         setError(result.error);
         setSubmitting(false);
         return;
+      }
+      // Super admin's password doubles as the server-side ADMIN_PASSWORD, so unlock portfolio editing too.
+      if (result.user!.role === "SUPERADMIN") {
+        await fetch("/api/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        }).catch(() => {});
       }
       const current = window.location.pathname;
       const isClient = result.user!.role === "CLIENT";
