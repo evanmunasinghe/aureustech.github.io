@@ -26,6 +26,35 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
 export const DATABASE_URL = process.env.DATABASE_URL;
 
+/** Password-free summary of DATABASE_URL, for comparing what a deployment received with your local value. */
+export function describeDatabaseUrl(): string {
+  const raw = DATABASE_URL;
+  if (!raw) return "DATABASE_URL is not set";
+  const notes = [`length=${raw.length}`];
+  if (raw !== raw.trim()) notes.push("HAS LEADING/TRAILING WHITESPACE");
+  if (/^["']|["']$/.test(raw.trim())) notes.push("WRAPPED IN QUOTES");
+  try {
+    const u = new URL(raw.trim());
+    notes.push(
+      `protocol=${u.protocol}`,
+      `user=${decodeURIComponent(u.username)}`,
+      `passwordLength=${decodeURIComponent(u.password).length}`,
+      `host=${u.hostname}`,
+      `port=${u.port}`,
+      `db=${u.pathname.slice(1)}`,
+      `params=${u.search}`
+    );
+  } catch {
+    notes.push("NOT A VALID URL");
+  }
+  return notes.join(" ");
+}
+
+/** Logs a DB failure with the underlying driver error (the pool hides it in .cause) and the URL summary. */
+export function logDbError(label: string, err: unknown) {
+  console.error(label, err, (err as { cause?: unknown })?.cause ?? "", "|", describeDatabaseUrl());
+}
+
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 // Two defaults of the MariaDB driver behind the Prisma adapter break remote
@@ -43,6 +72,11 @@ function normalizeDatabaseUrl(raw: string): string {
     if (sslMode.toLowerCase() !== "disabled" && !url.searchParams.has("ssl")) {
       url.searchParams.set("ssl", "true");
     }
+  }
+  // TiDB's Prisma snippet uses `sslaccept=strict`, which the driver also ignores.
+  if (url.searchParams.has("sslaccept")) {
+    url.searchParams.delete("sslaccept");
+    url.searchParams.set("ssl", "true");
   }
   if (!url.searchParams.has("connectTimeout")) {
     url.searchParams.set("connectTimeout", "15000");

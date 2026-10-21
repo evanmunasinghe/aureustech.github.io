@@ -35,7 +35,8 @@ export async function getProjects(): Promise<PortfolioProject[]> {
       }),
     ]);
   } catch (err) {
-    console.error("portfolio: DB read failed, using defaults", err);
+    const { logDbError } = await import("@/lib/db").catch(() => ({ logDbError: console.error }));
+    logDbError("portfolio: DB read failed, using defaults", err);
     return defaultProjects;
   } finally {
     clearTimeout(timer);

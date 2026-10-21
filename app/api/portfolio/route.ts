@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAdmin } from "@/lib/auth/server";
-import { prisma } from "@/lib/db";
+import { logDbError, prisma } from "@/lib/db";
 import { parseProject } from "@/lib/portfolio";
 
 export async function GET() {
@@ -8,8 +8,7 @@ export async function GET() {
     const rows = await prisma.portfolioProject.findMany({ orderBy: { createdAt: "asc" } });
     return NextResponse.json(rows);
   } catch (err) {
-    // The mariadb pool reports every connect failure as a "pool timeout"; the real reason is in .cause.
-    console.error("portfolio GET failed", err, (err as { cause?: unknown }).cause);
+    logDbError("portfolio GET failed", err);
     return NextResponse.json({ error: "Database unavailable." }, { status: 500 });
   }
 }
