@@ -4,8 +4,14 @@ import { prisma } from "@/lib/db";
 import { parseProject } from "@/lib/portfolio";
 
 export async function GET() {
-  const rows = await prisma.portfolioProject.findMany({ orderBy: { createdAt: "asc" } });
-  return NextResponse.json(rows);
+  try {
+    const rows = await prisma.portfolioProject.findMany({ orderBy: { createdAt: "asc" } });
+    return NextResponse.json(rows);
+  } catch (err) {
+    // The mariadb pool reports every connect failure as a "pool timeout"; the real reason is in .cause.
+    console.error("portfolio GET failed", err, (err as { cause?: unknown }).cause);
+    return NextResponse.json({ error: "Database unavailable." }, { status: 500 });
+  }
 }
 
 export async function POST(req: Request) {
